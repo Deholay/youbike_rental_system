@@ -15,6 +15,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.youbike.databinding.ActivityMainBinding;
+import com.example.youbike.domain.StationRepository;
+import com.example.youbike.feature.list.Station;
+import com.example.youbike.feature.list.StationAdapter;
+import com.example.youbike.feature.list.StationListController;
+import com.example.youbike.feature.map.MapController;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -59,18 +64,14 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // 使用 NavigationHandler 抽離側邊欄點擊
         navigationView.setNavigationItemSelectedListener(new NavigationHandler(this, userEmail, navController));
 
-        // Repository 初始化與資料導入
         stationRepository = new StationRepository(this);
         stationRepository.resetDatabase();
         stationRepository.importFromAssets();
 
-        // 讀取站點資料
         List<Station> stations = stationRepository.getAllStations();
 
-        // 初始化地圖
         mapController = new MapController(this, userEmail);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_ID);
@@ -81,12 +82,10 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        // 初始化列表控制器
         androidx.recyclerview.widget.RecyclerView recyclerView = findViewById(R.id.recycler);
         stationListController = new StationListController(recyclerView);
         stationListController.bind(stations, new StationAdapter(this, stations));
 
-        // 列表切換
         Button toggleButton = findViewById(R.id.toggleButton);
         toggleButton.setOnClickListener(v -> stationListController.toggleVisibility());
     }
