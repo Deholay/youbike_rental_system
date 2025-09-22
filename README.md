@@ -13,6 +13,7 @@
 
 ## 環境需求
 - Android Studio
+- Phone in Android System
 
 ## 建置
 ```bash
@@ -70,14 +71,14 @@
 - `data/*`：使用者資料查詢與登入流程封裝。
 
 # 使用工具與套件
-## 開發與建置
+### 開發與建置
 - Android Studio
 - Gradle 8.4
 - Android Gradle Plugin
 - Java 17
 - 資料繫結：ViewBinding、DataBinding
 
-## Android/Jetpack 依賴
+### Android/Jetpack 依賴
 - appcompat
 - material
 - activity
@@ -85,10 +86,10 @@
 - navigation-fragment
 - navigation-ui
 
-## Google 服務
+### Google 服務
 - play-services-maps（Google Maps）
 
-##JSON 與資料處理
+### JSON 與資料處理
 - Gson（com.google.code.gson:gson）
 
 # 開發人員
