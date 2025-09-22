@@ -44,74 +44,58 @@ keyPassword=xxxxxx
 
 ## 程式碼架構（封裝後）
 
-### UI 組裝與導覽
-- `app/src/main/java/com/example/youbike/MainActivity.java`
-  - 負責：
-    - AppBar、Drawer、NavController 初始化
-    - 側邊欄標頭顯示登入使用者資訊
-    - 使用下列控制器與服務完成功能（地圖、資料、清單）
-  - 依賴：`StationRepository`、`MapController`、`StationListController`、`NavigationHandler`
+```
+app/src/main/java/com/example/youbike/
+├── MainActivity.java                     # 主組裝與導覽（AppBar/Drawer/NavController）
+├── NavigationHandler.java                # 側邊欄點擊導覽抽離
+├── db/
+│   └── DatabaseHelperMap.java            # 地圖站點/車柱 SQLite 結構與初始化
+├── domain/
+│   └── StationRepository.java            # 匯入 assets→DB、查詢站點清單
+├── feature/
+│   ├── map/
+│   │   └── MapController.java            # 地圖渲染、Marker 互動、跳轉詳情
+│   └── list/
+│       ├── Station.java                  # 站點資料模型
+│       ├── StationAdapter.java           # 站點列表 Adapter
+│       └── StationListController.java    # RecyclerView 綁定/顯示切換
+├── data/
+│   ├── LoginDataSource.java              # 使用者資料查詢（SQLite）
+│   ├── LoginRepository.java              # 登入資料倉儲
+│   └── model/LoggedInUser.java           # 使用者模型
+├── ProfileActivity.java                  # 使用者個資顯示（從 LoginDataSource 讀）
+├── LoginActivity.java                    # 使用者登入
+├── SignupActivity.java                   # 使用者註冊
+├── MaintenanceLoginActivity.java         # 維修登入（DatabaseHelper.checkMaintenancePassword）
+├── StationDetailsActivity.java           # 站點詳情頁（租還車、扣款）
+├── VehicleDispatchActivity.java          # 車輛調度（測試/範例）
+└── VehicleStatusActivity.java            # 車輛狀態查詢/更新（測試/範例）
+```
 
-- `app/src/main/java/com/example/youbike/NavigationHandler.java`
-  - 抽離側邊欄選單點擊事件
-  - 導向 `ProfileActivity`、`ReportActivity`、`ValueActivity`，並於需要時攜帶 `USER_EMAIL`
+其他重要目錄：
+```
+app/src/main/
+├── assets/                               # 站點/車樁 JSON（NTUStations.json、Docks.json）
+└── res/
+    ├── layout/                           # XML 版面（activity_*.xml, fragment_*.xml, row_*.xml）
+    ├── menu/                             # 主選單與側欄選單
+    ├── values/                           # colors/strings/themes
+    └── navigation/mobile_navigation.xml  # NavGraph
+```
 
-### 地圖與清單
-- `app/src/main/java/com/example/youbike/MapController.java`
-  - 在 `GoogleMap` 上渲染站點 Marker、設定初始鏡頭位置
-  - 處理 Marker 點擊：第一次點擊顯示 InfoWindow；點擊 InfoWindow 進入 `StationDetailsActivity`
-  - 會將 `stationUID`、`stationName` 與 `USER_EMAIL` 透過 Intent 傳遞
+### 模組關係說明
+- `MainActivity`：組裝 UI 與控制器，負責導覽/注入，不承擔資料/地圖細節。
+- `domain/StationRepository`：資料層入口，負責 assets→DB 匯入與站點查詢。
+- `db/DatabaseHelperMap`：資料表結構與初始化（站點/車樁）。
+- `feature/map/MapController`：地圖與 Marker 行為，InfoWindow 點擊跳 `StationDetailsActivity`。
+- `feature/list/*`：列表 UI 封裝，`StationListController` 控制顯示切換。
+- `data/*`：使用者資料查詢與登入流程封裝。
 
-- `app/src/main/java/com/example/youbike/StationListController.java`
-  - 封裝 RecyclerView 綁定與顯示切換（顯示/隱藏清單）
-  - `bind(stations, adapter)` 與 `toggleVisibility()`
-
-- `app/src/main/java/com/example/youbike/StationAdapter.java` / `Station.java`
-  - 站點資料模型與清單項目的 Adapter
-
-### 資料層
-- `app/src/main/java/com/example/youbike/StationRepository.java`
-  - 資料來源的統一入口：
-    - 重置地圖資料庫 `DatabaseHelperMap.resetDatabase()`
-    - 自 `assets` 讀取 `NTUStations.json`、`Docks.json` 寫入資料庫
-    - 提供 `getAllStations()` 取得站點清單（供地圖與清單使用）
-
-- `app/src/main/java/com/example/youbike/DatabaseHelperMap.java`
-  - 地圖/站點/車柱 SQLite 結構與初始化
-
-- `app/src/main/java/com/example/youbike/DatabaseHelper.java`
-  - 使用者資料（email、password、username、phone、easycard、balance）的 SQLite 邏輯
-  - `checkMaintenancePassword()` 預設回傳密碼比對（目前為 "6666"）
-
-### 使用者流程（登入/註冊/加值）
-- `app/src/main/java/com/example/youbike/LoginActivity.java` / `SignupActivity.java`
-  - 使用 `DatabaseHelper` 驗證或寫入使用者資料
-
-- `app/src/main/java/com/example/youbike/ui/value/ValueFragment.java` / `ValueActivity.java`
-  - 顯示目前餘額、輸入加值金額、呼叫 `DatabaseHelper.updateBalance()` 更新餘額
-
-- `app/src/main/java/com/example/youbike/MaintenanceLoginActivity.java`
-  - 維修人員登入（透過 `DatabaseHelper.checkMaintenancePassword()`）
-
-### 畫面與資源
-- 版面：`app/src/main/res/layout/**`
-- 選單：`app/src/main/res/menu/**`
-- 文字/樣式：`app/src/main/res/values/**`
-- 導航：`app/src/main/res/navigation/mobile_navigation.xml`
-- 資產（JSON）：`app/src/main/assets/**`
-
-### 專案/建置設定
-- Gradle：`build.gradle.kts`（根）、`app/build.gradle.kts`（模組）、`settings.gradle.kts`
-- Gradle Wrapper：`gradlew`, `gradlew.bat`, `gradle/wrapper/**`
-- 忽略檔：`.gitignore`（已忽略 build 產物、local.properties、keystore 等敏感）
-
----
-
-## 開發指引
-- 修改維修密碼：`DatabaseHelper.checkMaintenancePassword()`
-- 調整地圖互動：`MapController`（Marker 行為、鏡頭位置）
-- 調整資料來源：`StationRepository`（assets → DB 的匯入流程）
-- 精簡/擴充主流程：在 `MainActivity` 組裝與注入控制器
+### 常見修改點
+- 維修密碼：`DatabaseHelper.checkMaintenancePassword()`
+- 地圖互動：`feature/map/MapController`（Marker 行為/鏡頭）
+- 站點資料來源：`domain/StationRepository`（assets→DB 流程）
+- 主流程調整：在 `MainActivity` 組裝/注入控制器
 
 ## 授權
 請自行補上 `LICENSE`（例如 MIT 或 Apache-2.0）。
