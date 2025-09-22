@@ -22,7 +22,7 @@
 ```
 
 ## 專案結構
-本專案主要程式邏輯統一在'app/src/main/java/com/example/youbike/'目錄下，以下說明各檔案用途：
+本專案主要程式邏輯統一在`app/src/main/java/com/example/youbike/`目錄下，以下說明各檔案用途：
 ```
 .
 ├── MainActivity.java                     # 主組裝與導覽（AppBar/Drawer/NavController）
@@ -51,7 +51,7 @@
 └── VehicleStatusActivity.java            # 車輛狀態查詢/更新
 ```
 
-其他重要目錄'app/src/main/'：
+其他重要目錄`app/src/main/`：
 ```
 .
 ├── assets/                               # 站點/車樁 JSON
