@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/dock_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Dock ID"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/bike_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Bike ID"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/rent_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="借車" />
+
+    <Button
+        android:id="@+id/return_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="還車"
+        android:layout_marginStart="8dp" />
+</LinearLayout>

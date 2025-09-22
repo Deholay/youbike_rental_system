@@ -1,0 +1,52 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/DockIdEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Dock ID" />
+
+    <Button
+        android:id="@+id/queryDockButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Query Dock" />
+
+    <TextView
+        android:id="@+id/dockStatusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp" /> <!-- 調整這個值來改變文字大小 -->
+    <EditText
+        android:id="@+id/BikeIDText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Bike" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/AddButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新增"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/RemoveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="移除" />
+    </LinearLayout>
+
+</LinearLayout>

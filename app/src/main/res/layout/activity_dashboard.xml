@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btnVehicleStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="車輛狀態"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnCrossAreaVehicles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="跨區車輛"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnVehicleDispatch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="車輛調度"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnShowRegisteredUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="註冊名單"
+        android:layout_marginBottom="16dp"/>
+
+</LinearLayout>
